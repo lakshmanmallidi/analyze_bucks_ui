@@ -1,8 +1,8 @@
 import React from 'react';
-import Login from './components/Login'
+import LandingPage from './components/LandingPage';
 function App() {
   return (
-    <Login />
+    <LandingPage />
   );
 }
 
