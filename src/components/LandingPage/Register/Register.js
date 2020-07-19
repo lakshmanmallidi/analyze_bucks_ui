@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import "../card.css";
 function Register() {
   return (
@@ -50,9 +51,11 @@ function Register() {
       >
         Register
       </button>
-      <div className="pt-3 row">
-        <div className="col-sm-7 text-right p-0">Already have an account?</div>
-        <div className="col-sm-5 pl-1">Login here</div>
+      <div className="pt-3">
+        <div className="text-center">
+          Already have an account? 
+          <Link className="pl-2" to="/">Login here</Link>
+        </div>
       </div>
     </form>
   );
