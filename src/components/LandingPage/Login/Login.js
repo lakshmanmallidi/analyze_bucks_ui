@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../card.css";
-function Login() {
+function Login({history}) {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [inProgess, setInProgess] =  useState(false);
+
+  useEffect(() => {
+    if(localStorage.getItem("is_login")!=null && localStorage.getItem("token")!=null)
+      history.push("/HomePage")
+  }, [history]);
 
   function validateForm() {
     return phoneNumber.length === 10 && password.length > 0 && phoneNumber.match(/^[0-9]+$/);
@@ -16,15 +22,17 @@ function Login() {
       headers: {'Content-Type': 'application/json' },
       body: JSON.stringify({ username: phoneNumber, password: password})
     };
+    setInProgess(true)
     const response = await fetch('http://localhost:8000/api-token-auth/', requestOptions);
     if(response.ok) {
       const data = await response.json();
-      console.log(data)
+      localStorage.setItem("token",data['token'])
+      localStorage.setItem("is_login",true)
+      history.push("/HomePage")
     }
     else{
       alert("invalid login")
     }
-
   }
 
   return (
@@ -67,9 +75,13 @@ function Login() {
       <button
         className="btn btn-lg btn-primary btn-block text-uppercase"
         type="submit"
-        disabled={!validateForm()}
+        disabled={!validateForm() || inProgess}
       >
-        Login
+        {!inProgess && (<div>LOGIN</div>)}
+        {inProgess && (<div>
+          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          <span className="pl-1">Loading...</span>
+        </div>)}
       </button>
       <div className="pt-3">
         <div className="text-center">
