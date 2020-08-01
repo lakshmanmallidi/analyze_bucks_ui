@@ -23,15 +23,27 @@ function Login({history}) {
       body: JSON.stringify({ username: phoneNumber, password: password})
     };
     setInProgess(true)
-    const response = await fetch('http://localhost:8000/api-token-auth/', requestOptions);
-    if(response.ok) {
-      const data = await response.json();
-      localStorage.setItem("token",data['token'])
-      localStorage.setItem("is_login",true)
-      history.push("/HomePage")
-    }
-    else{
-      alert("invalid login")
+    try{
+      const response = await fetch('http://localhost:8000/api-token-auth/', requestOptions);
+      if(response.ok) {
+        const data = await response.json();
+        localStorage.setItem("token",data['token'])
+        localStorage.setItem("is_login",true)
+        setInProgess(false)
+        history.push("/HomePage")
+      }
+      else{
+        setInProgess(false)
+        alert("invalid login")
+        setPhoneNumber("")
+        setPassword("")
+      }
+    } catch(e){
+      setInProgess(false)
+      console.log(e)
+      alert("server error")
+      setPhoneNumber("")
+      setPassword("")
     }
   }
 
