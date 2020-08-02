@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { ThreeDotsVertical } from "react-bootstrap-icons";
+import { DoorClosed } from "react-bootstrap-icons";
+import Loading from "../../Loading"
 
-function Groups({ triggerAuthError }) {
+function Groups({ triggerError }) {
   const [inProgess, setInProgess] = useState(false);
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
     async function getGroups() {
       setInProgess(true);
-      console.log(inProgess);
       const requestOptions = {
         method: "GET",
         headers: {
@@ -16,20 +16,24 @@ function Groups({ triggerAuthError }) {
           Authorization: "Token " + localStorage.getItem("token"),
         },
       };
-      const response = await fetch(
-        "http://127.0.0.1:8000/finance/business_group/",
-        requestOptions
-      );
-      if (response.ok) {
-        const data = await response.json();
-        setGroups(data);
-        setInProgess(false);
-      } else if (response.status === 401) {
-        setInProgess(false);
-        triggerAuthError();
-      } else {
-        setInProgess(false);
-        alert("Server Error");
+      try{
+        const response = await fetch(
+          "http://127.0.0.1:8000/finance/business_group/",
+          requestOptions
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setGroups(data);
+          setInProgess(false);
+        } else if (response.status === 401) {
+          setInProgess(false);
+          triggerError("authError");
+        } else {
+          setInProgess(false);
+          alert("Server Error");
+        }
+      } catch{
+        triggerError("apiError")
       }
     }
     getGroups();
@@ -56,9 +60,6 @@ function Groups({ triggerAuthError }) {
         cssStyle = "bg-info"
         break
       case 7:
-        cssStyle = "bg-light"
-        break
-      case 8:
         cssStyle = "bg-primary"
         break
       default:
@@ -72,7 +73,7 @@ function Groups({ triggerAuthError }) {
             {group.group_name.toUpperCase()}
             <div className="float-right">
               <button className="btn p-0">
-                <ThreeDotsVertical />
+                <DoorClosed color="white"/>
               </button>
             </div>
           </div>
@@ -84,8 +85,11 @@ function Groups({ triggerAuthError }) {
   }
 
   return (
-    <div className="container">
-      {groups.map((group, index) => renderCard(group, index))}
+    <div>
+      {!inProgess && (<div className="container">
+        {groups.map((group, index) => renderCard(group, index))}
+      </div>)}
+      {inProgess && (<div className="text-center"><Loading /></div>)}
     </div>
   );
 }

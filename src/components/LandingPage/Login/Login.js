@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../../Loading"
 import "../card.css";
 function Login({history}) {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -41,9 +42,7 @@ function Login({history}) {
     } catch(e){
       setInProgess(false)
       console.log(e)
-      alert("server error")
-      setPhoneNumber("")
-      setPassword("")
+      history.push("/offline")
     }
   }
 
@@ -90,10 +89,7 @@ function Login({history}) {
         disabled={!validateForm() || inProgess}
       >
         {!inProgess && (<div>LOGIN</div>)}
-        {inProgess && (<div>
-          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          <span className="pl-1">Loading...</span>
-        </div>)}
+        {inProgess && (<Loading />)}
       </button>
       <div className="pt-3">
         <div className="text-center">

@@ -14,6 +14,12 @@ function LandingPage({page,history}) {
     else if(page==="register"){
       return <Register history={history}/>
     }
+    else if(page==="offline"){
+      return (<div className="text-center">
+        <h4>you are offline</h4>
+        <Link to="/">Go to Home Page</Link>
+      </div>)
+    }
     else{
       return (<div className="text-center">
         <h4>404</h4>
