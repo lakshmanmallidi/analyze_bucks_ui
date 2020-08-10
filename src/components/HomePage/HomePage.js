@@ -25,7 +25,7 @@ function HomePage({ history }) {
   function errorRouter(errorType) {
     localStorage.clear();
     if (errorType === "authError") history.push("/");
-    else if (errorType === "apiError") history.push("/offline");
+    else if (errorType === "apiError") history.push("/server_error");
   }
 
   function handleSideBarOpen() {

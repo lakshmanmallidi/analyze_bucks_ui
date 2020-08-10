@@ -14,9 +14,9 @@ function LandingPage({page,history}) {
     else if(page==="register"){
       return <Register history={history}/>
     }
-    else if(page==="offline"){
+    else if(page==="server_error"){
       return (<div className="text-center">
-        <h4>you are offline</h4>
+        <h4>Unable to fetch data</h4>
         <Link to="/">Go to Home Page</Link>
       </div>)
     }

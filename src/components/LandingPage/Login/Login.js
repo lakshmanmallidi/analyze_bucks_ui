@@ -89,7 +89,7 @@ function Login({history}) {
         disabled={!validateForm() || inProgess}
       >
         {!inProgess && (<div>LOGIN</div>)}
-        {inProgess && (<Loading />)}
+        {inProgess && (<Loading/>)}
       </button>
       <div className="pt-3">
         <div className="text-center">

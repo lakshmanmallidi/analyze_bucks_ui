@@ -11,9 +11,9 @@ function App() {
           <Route path="/register" exact render={(props) => (<LandingPage {...props} page={"register"} />)} />
           <Route path="/HomePage" exact component={HomePage} />
           <Route
-            path="/offline"
+            path="/server_error"
             exact
-            render={(props) => (<LandingPage {...props} page={"offline"} />)}
+            render={(props) => (<LandingPage {...props} page={"server_error"} />)}
           />
           <Route
             path="*"
