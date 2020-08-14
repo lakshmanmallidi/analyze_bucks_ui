@@ -7,10 +7,13 @@ import {
   BoxArrowInLeft,
 } from "react-bootstrap-icons";
 import Groups from "./Groups";
+import Customers from "./Customers";
 
 function HomePage({ history }) {
   const [isSideBarOpen, setSideBarOpen] = useState(false);
   const [viewType, setViewType] = useState(1);
+  const [navBarContent, setNavBarContent] = useState(<div></div>);
+  const [apiData, setApiData] = useState();
 
   useEffect(() => {
     if (
@@ -39,7 +42,22 @@ function HomePage({ history }) {
 
   function getView() {
     if (viewType === 1) {
-      return <Groups triggerError={errorRouter} />;
+      return (
+        <Groups
+          triggerError={errorRouter}
+          setViewType={setViewType}
+          setApiData={setApiData}
+        />
+      );
+    } else if (viewType === 2) {
+      return (
+        <Customers
+          triggerError={errorRouter}
+          group_id={apiData}
+          setViewType={setViewType}
+          setApiData={setApiData}
+        />
+      );
     }
   }
 
@@ -53,10 +71,11 @@ function HomePage({ history }) {
         <PersonCircle color="white" size={96} />
         <h5 style={{ color: "white" }}>Profile</h5>
       </button>
-      <button className="btn side-bar-item" onClick={() => setViewType(1)}>
+      {navBarContent}
+      {/*<button className="btn side-bar-item" onClick={() => setViewType(1)}>
         <HouseDoorFill color="white" size={30} />
         <span className="p-2 side-bar-span">Home</span>
-      </button>
+      </button>*/}
       <button className="btn side-bar-item fixed-bottom" onClick={handleLogOut}>
         <BoxArrowInLeft color="white" size={30} />
         <span className="p-2 side-bar-span">Log Out</span>

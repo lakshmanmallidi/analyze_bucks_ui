@@ -4,7 +4,7 @@ import Loading from "../../Loading";
 import CreateButton from "../CreateButton";
 import RecordFilter from "../RecordFilter";
 
-function Groups({ triggerError }) {
+function Groups({ triggerError, setViewType, setApiData}) {
   const [inProgess, setInProgess] = useState(false);
   const [groups, setGroups] = useState([]);
   const [isCreateWindowOpen, setCreateWindowOpen] = useState(false);
@@ -120,7 +120,7 @@ function Groups({ triggerError }) {
     }
   }
 
-  async function openGroup(group_id) {
+  async function activateGroup(group_id) {
     setInProgess(true);
     const requestOptions = {
       method: "PUT",
@@ -203,6 +203,11 @@ function Groups({ triggerError }) {
     setDelGroupWindowOpen(false);
   }
 
+  function openGroup(group_id) {
+    setViewType(2)
+    setApiData(group_id)
+  }
+
   function renderCard(group, index) {
     const choice = (index % 8) + 1;
 
@@ -254,7 +259,7 @@ function Groups({ triggerError }) {
                   </button>
                   <button
                     className="btn p-0 m-1"
-                    onClick={(e) => openGroup(group.group_id)}
+                    onClick={(e) => activateGroup(group.group_id)}
                   >
                     <DoorOpen color="white" />
                   </button>
@@ -264,7 +269,7 @@ function Groups({ triggerError }) {
           </div>
         </div>
         <div className="card-body mx-auto">
-          <button className={"btn text-white " + cssStyle}>Open</button>
+          <button className={"btn text-white " + cssStyle} onClick={e=>openGroup(group.group_id)}>Open</button>
         </div>
       </div>
     );

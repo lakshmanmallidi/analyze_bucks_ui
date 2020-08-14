@@ -41,8 +41,7 @@ function Login({history}) {
       }
     } catch(e){
       setInProgess(false)
-      console.log(e)
-      history.push("/offline")
+      history.push("/sever_error")
     }
   }
 
