@@ -4,7 +4,6 @@ import Loading from "../../Loading";
 import CreateButton from "../CreateButton";
 import RecordFilter from "../RecordFilter";
 import Select from "react-select";
-import "./Customer.css";
 
 function Customers({ triggerError, group_id, setViewType, setApiData }) {
   const [inProgess, setInProgess] = useState(false);
