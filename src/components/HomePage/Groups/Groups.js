@@ -4,7 +4,7 @@ import Loading from "../../Loading";
 import CreateButton from "../CreateButton";
 import RecordFilter from "../RecordFilter";
 
-function Groups({ triggerError, setViewType, setApiData}) {
+function Groups({ triggerError, setViewType, setGroupId}) {
   const [inProgess, setInProgess] = useState(false);
   const [groups, setGroups] = useState([]);
   const [isCreateWindowOpen, setCreateWindowOpen] = useState(false);
@@ -205,7 +205,7 @@ function Groups({ triggerError, setViewType, setApiData}) {
 
   function openGroup(group_id) {
     setViewType(2)
-    setApiData(group_id)
+    setGroupId(group_id)
   }
 
   function renderCard(group, index) {
@@ -348,7 +348,17 @@ function Groups({ triggerError, setViewType, setApiData}) {
           <Loading />
         </div>
       )}
-      <div className="pt-5">
+      <div
+        style={{
+          background: "white",
+          zIndex: 0,
+          top: 0,
+          position: "fixed",
+          width: "100%",
+          height: "60px",
+        }}
+      />
+      <div style={{ marginTop: "60px" }}>
         <div className="container">
           {groups
             .filter((group) =>

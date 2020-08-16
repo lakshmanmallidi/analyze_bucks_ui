@@ -3,17 +3,22 @@ import Sidebar from "react-sidebar";
 import "./HomePage.css";
 import {
   PersonCircle,
-  HouseDoorFill,
+  PeopleFill,
   BoxArrowInLeft,
+  HouseDoorFill,
+  Journals
 } from "react-bootstrap-icons";
 import Groups from "./Groups";
 import Customers from "./Customers";
+import Accounts from "./Accounts";
+import Transactions from "./Transactions";
 
 function HomePage({ history }) {
   const [isSideBarOpen, setSideBarOpen] = useState(false);
   const [viewType, setViewType] = useState(1);
-  const [navBarContent, setNavBarContent] = useState(<div></div>);
-  const [apiData, setApiData] = useState();
+  const [groupId, setGroupId] = useState();
+  const [custId, setCustId] = useState();
+  const [acctId, setAcctId] = useState();
 
   useEffect(() => {
     if (
@@ -46,21 +51,81 @@ function HomePage({ history }) {
         <Groups
           triggerError={errorRouter}
           setViewType={setViewType}
-          setApiData={setApiData}
+          setGroupId={setGroupId}
         />
       );
     } else if (viewType === 2) {
       return (
         <Customers
           triggerError={errorRouter}
-          group_id={apiData}
+          group_id={groupId}
           setViewType={setViewType}
-          setApiData={setApiData}
+          setCustId={setCustId}
+        />
+      );
+    } else if (viewType === 3) {
+      return (
+        <Accounts
+          triggerError={errorRouter}
+          cust_id={custId}
+          group_id={groupId}
+          setViewType={setViewType}
+          setAcctId={setAcctId}
+        />
+      );
+    } else if (viewType === 4) {
+      return (
+        <Transactions
+          triggerError={errorRouter}
+          cust_id={custId}
+          group_id={groupId}
+          acct_id={acctId}
         />
       );
     }
   }
 
+  function getNavContent(){
+    if(viewType===1){
+      return (<div></div>)
+    }
+    else if(viewType===2){
+      return (<div>
+        <button className="btn side-bar-item" onClick={() => setViewType(1)}>
+          <HouseDoorFill color="white" size={30} />
+          <span className="p-2 side-bar-span">Home</span>
+        </button>
+      </div>)
+    }
+    else if(viewType===3){
+      return (<div>
+        <button className="btn side-bar-item" onClick={() => setViewType(1)}>
+          <HouseDoorFill color="white" size={30} />
+          <span className="p-2 side-bar-span">Home</span>
+        </button>
+        <button className="btn side-bar-item" onClick={() => setViewType(2)}>
+          <PeopleFill color="white" size={30} />
+          <span className="p-2 side-bar-span">Customers</span>
+        </button>
+      </div>)
+    }
+    else if(viewType===4){
+      return (<div>
+        <button className="btn side-bar-item" onClick={() => setViewType(1)}>
+          <HouseDoorFill color="white" size={30} />
+          <span className="p-2 side-bar-span">Home</span>
+        </button>
+        <button className="btn side-bar-item" onClick={() => setViewType(2)}>
+          <PeopleFill color="white" size={30} />
+          <span className="p-2 side-bar-span">Customers</span>
+        </button>
+        <button className="btn side-bar-item" onClick={() => setViewType(3)}>
+          <Journals color="white" size={30} />
+          <span className="p-2 side-bar-span">Accounts</span>
+        </button>
+      </div>)
+    }
+  }
   const sideBarStyleParams = {
     sidebar: { background: "#25282d", width: "50%", maxWidth: "300px" },
   };
@@ -71,11 +136,7 @@ function HomePage({ history }) {
         <PersonCircle color="white" size={96} />
         <h5 style={{ color: "white" }}>Profile</h5>
       </button>
-      {navBarContent}
-      {/*<button className="btn side-bar-item" onClick={() => setViewType(1)}>
-        <HouseDoorFill color="white" size={30} />
-        <span className="p-2 side-bar-span">Home</span>
-      </button>*/}
+      {getNavContent()}
       <button className="btn side-bar-item fixed-bottom" onClick={handleLogOut}>
         <BoxArrowInLeft color="white" size={30} />
         <span className="p-2 side-bar-span">Log Out</span>

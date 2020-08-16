@@ -5,7 +5,12 @@ import CreateButton from "../CreateButton";
 import RecordFilter from "../RecordFilter";
 import Select from "react-select";
 
-function Customers({ triggerError, group_id, setViewType, setApiData }) {
+function Customers({
+  triggerError,
+  group_id,
+  setViewType,
+  setCustId
+}) {
   const [inProgess, setInProgess] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [isCreateWindowOpen, setCreateWindowOpen] = useState(false);
@@ -13,7 +18,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
   const [custName, setCustName] = useState("");
   const [custAddr, setCustAddr] = useState(null);
   const [custIdentifier, setCustIdentifier] = useState("");
-  const [refCustId, setRefCustId] = useState(null);
+  const [refCust, setRefCust] = useState({label:"None",value:null});
   const [filterState, toggleFilterState] = useState(true);
   const [Error400, setError400] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
@@ -57,7 +62,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
       name: custName,
       address: custAddr,
       identifier: custIdentifier,
-      ref_cust: refCustId,
+      ref_cust: refCust.value,
       business_group: group_id,
     };
 
@@ -79,6 +84,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
         setCustomers(customers.concat(data));
         setCreationInProgress(false);
         resetCreateForm();
+        setError400(false)
         setCreateWindowOpen(false);
       } else if (response.status === 400) {
         setCreationInProgress(false);
@@ -175,7 +181,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
     setCustName("");
     setCustIdentifier("");
     setCustAddr(null);
-    setRefCustId(null);
+    setRefCust({label:"None",value:null});
   }
 
   function createWindowValidation() {
@@ -189,7 +195,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
 
   function openCustomer(cust_id) {
     setViewType(3);
-    setApiData(cust_id);
+    setCustId(cust_id);
   }
 
   function renderCard(customer, index) {
@@ -267,7 +273,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
           zIndex: 1,
           position: "fixed",
           width: "80%",
-          top: "10%",
+          top: "60px",
           marginLeft: "10%",
           marginRight: "10%",
         }}
@@ -321,6 +327,7 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
               />
               <Select
                 placeholder="Select Reference Customer"
+                value={refCust}
                 options={[{ label: "None", value: null }].concat(
                   customers.map((customer) => {
                     return {
@@ -329,9 +336,10 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
                     };
                   })
                 )}
-                onChange={(label, value) => setRefCustId(value)}
+                onChange={obj => setRefCust(obj)}
               />
             </div>
+            
             {Error400 && (
               <div style={{ color: "red", textSize: "smaller" }}>
                 *combination of customer and identifier exists!
@@ -355,7 +363,18 @@ function Customers({ triggerError, group_id, setViewType, setApiData }) {
         </div>
       )}
 
-      <div style={{ paddingTop: "30%" }}>
+      <div
+        style={{
+          background: "white",
+          zIndex: 0,
+          top: 0,
+          position: "fixed",
+          width: "100%",
+          height: "110px",
+        }}
+      />
+      
+      <div style={{ marginTop: "110px" }}>
         <div className="container">
           {customers
             .filter((customer) =>
